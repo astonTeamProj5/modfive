@@ -1,5 +1,6 @@
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Main {
@@ -7,7 +8,11 @@ public class Main {
 
     public static void main(String[] args) {
         try (SCANNER) {
-            List<Record> items = createDemoData();
+            Map<String, TextStrategy> strategies = new HashMap<>();
+            strategies.put("1", new FillFromFileStrategy());
+            strategies.put("2", new FillRandomStrategy());
+            strategies.put("3", new FillManualStrategy());
+            
             boolean running = true;
             
             while (running) {
@@ -19,54 +24,48 @@ public class Main {
                         running = false;
                         System.out.println("Exiting...");
                     }
-                    case "1" -> runStrategy(new SortByField1(), items, promptDirection());
-                    case "2" -> runStrategy(new SortByField2(), items, promptDirection());
-                    case "3" -> runStrategy(new SortByField3(), items, promptDirection());
+                    case "1", "2", "3" -> {
+                        int length = promptLength();
+                        TextStrategy strategy = strategies.get(input);
+                        List<Record> items = strategy.fill(length, SCANNER);
+                    printItems(items);
+                    }
                     default -> System.out.println("Invalid choice. Please enter 0, 1, 2, or 3.");
                 }
             }
         }
     }
 
-    private static void runStrategy(SortStrategy strategy, List<Record> items, SortDirection direction) {
-        printItems("Before", items);
-        List<Record> sorted = strategy.sort(items, direction);
-        printItems("After", sorted);
-        items.clear();
-        items.addAll(sorted);
+    private static int promptLength() {
+        while (true) {
+            System.out.print("Enter array length: ");
+            String input = SCANNER.nextLine().trim();
+            try {
+                int length = Integer.parseInt(input);
+                if (length <= 0) {
+                    System.out.println("Length must be greater than 0.");
+                } else {
+                    return length;
+                }
+            } catch (NumberFormatException ex) {
+                System.out.println("Invalid number. Please try again.");
+            }
+        }
     }
 
     private static void printMenu() {
         System.out.println();
-        System.out.println("Choose sort field:");
-        System.out.println("1 - field1 (String)");
-        System.out.println("2 - field2 (int)");
-        System.out.println("3 - field3 (double)");
+        System.out.println("Choose fill method:");
+        System.out.println("1 - From file");
+        System.out.println("2 - Random");
+        System.out.println("3 - Manual");
         System.out.println("0 - Exit");
         System.out.print("Your choice: ");
     }
 
-    private static SortDirection promptDirection() {
-        while (true) {
-            System.out.println();
-            System.out.println("Choose direction:");
-            System.out.println("1 - Ascending");
-            System.out.println("2 - Descending");
-            System.out.print("Your choice: ");
-            String input = SCANNER.nextLine().trim();
-            if ("1".equals(input)) {
-                return SortDirection.ASC;
-            }
-            if ("2".equals(input)) {
-                return SortDirection.DESC;
-            }
-            System.out.println("Invalid choice. Please enter 1 or 2.");
-        }
-    }
-
-    private static void printItems(String title, List<Record> items) {
+    private static void printItems(List<Record> items) {
         System.out.println();
-        System.out.println(title + " (" + items.size() + "):");
+        System.out.println("Result (" + items.size() + "):");
         if (items.isEmpty()) {
             System.out.println("(empty)");
             return;
@@ -74,14 +73,5 @@ public class Main {
         for (Record item : items) {
             System.out.println(item);
         }
-    }
-
-    private static List<Record> createDemoData() {
-        List<Record> items = new ArrayList<>();
-        items.add(new Record.Builder().field1("Alpha").field2(3).field3(10.5).build());
-        items.add(new Record.Builder().field1("Gamma").field2(1).field3(7.2).build());
-        items.add(new Record.Builder().field1("Beta").field2(2).field3(9.1).build());
-        items.add(new Record.Builder().field1("Delta").field2(4).field3(5.4).build());
-        return items;
     }
 }
