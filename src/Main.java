@@ -8,17 +8,22 @@ public class Main {
 
     public static void main(String[] args) {
         try (SCANNER) {
-            Map<String, TextStrategy> strategies = new HashMap<>();
-            strategies.put("1", new FillFromFileStrategy());
-            strategies.put("2", new FillRandomStrategy());
-            strategies.put("3", new FillManualStrategy());
-            
+            Map<String, TextStrategy> fillStrategies = new HashMap<>();
+            fillStrategies.put("1", new FillFromFileStrategy());
+            fillStrategies.put("2", new FillRandomStrategy());
+            fillStrategies.put("3", new FillManualStrategy());
+
+            Map<String, SortStrategy> sortStrategies = new HashMap<>();
+            sortStrategies.put("1", new SortByField1());
+            sortStrategies.put("2", new SortByField2());
+            sortStrategies.put("3", new SortByField3());
+
             boolean running = true;
-            
+
             while (running) {
                 printMenu();
                 String input = SCANNER.nextLine().trim();
-                
+
                 switch (input) {
                     case "0" -> {
                         running = false;
@@ -26,9 +31,16 @@ public class Main {
                     }
                     case "1", "2", "3" -> {
                         int length = promptLength();
-                        TextStrategy strategy = strategies.get(input);
-                        List<Record> items = strategy.fill(length, SCANNER);
-                    printItems(items);
+                        TextStrategy fillStrategy = fillStrategies.get(input);
+                        List<Record> items = fillStrategy.fill(length, SCANNER);
+
+                        SortStrategy sortStrategy = promptSortStrategy(sortStrategies);
+                        if (sortStrategy == null) {
+                            running = false;
+                        } else {
+                            List<Record> sorted = sortStrategy.sort(items);
+                            printItems(sorted);
+                        }
                     }
                     default -> System.out.println("Invalid choice. Please enter 0, 1, 2, or 3.");
                 }
@@ -59,6 +71,31 @@ public class Main {
         System.out.println("1 - From file");
         System.out.println("2 - Random");
         System.out.println("3 - Manual");
+        System.out.println("0 - Exit");
+        System.out.print("Your choice: ");
+    }
+
+    private static SortStrategy promptSortStrategy(Map<String, SortStrategy> sortStrategies) {
+        while (true) {
+            printSortMenu();
+            String input = SCANNER.nextLine().trim();
+            if ("0".equals(input)) {
+                return null;
+            }
+            SortStrategy strategy = sortStrategies.get(input);
+            if (strategy != null) {
+                return strategy;
+            }
+            System.out.println("Invalid choice. Please enter 0, 1, 2, or 3.");
+        }
+    }
+
+    private static void printSortMenu() {
+        System.out.println();
+        System.out.println("Choose sort field:");
+        System.out.println("1 - field1 (String)");
+        System.out.println("2 - field2 (int)");
+        System.out.println("3 - field3 (double)");
         System.out.println("0 - Exit");
         System.out.print("Your choice: ");
     }
