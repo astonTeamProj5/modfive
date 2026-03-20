@@ -6,15 +6,18 @@ import java.util.Scanner;
 public class FillRandomStrategy implements TextStrategy {
     private final Random random = new Random();
 
+    private static final String[] MODELS = { "Volvo", "MAN", "Mercedes", "Scania", "Ikarus" };
+
     @Override
     public List<Record> fill(int length, Scanner scanner) {
-        System.out.println("TODO: generate real random data rules. Using simple random placeholders.");
         List<Record> items = new ArrayList<>();
+
         for (int i = 1; i <= length; i++) {
-            int field2 = random.nextInt(100);
-            double field3 = random.nextDouble() * 100.0;
+            int field1 = random.nextInt(1000);
+            String field2 = MODELS[random.nextInt(MODELS.length)];
+            int field3 = random.nextInt(1000) * 100;
             items.add(new Record.Builder()
-                    .field1("RandomItem" + i)
+                    .field1(field1)
                     .field2(field2)
                     .field3(field3)
                     .build());
