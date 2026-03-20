@@ -21,6 +21,18 @@ public class Record {
         return field3;
     }
 
+    public static java.util.Comparator<Record> byField1() {
+        return java.util.Comparator.comparing(Record::getField1);
+    }
+
+    public static java.util.Comparator<Record> byField2() {
+        return java.util.Comparator.comparingInt(Record::getField2);
+    }
+
+    public static java.util.Comparator<Record> byField3() {
+        return java.util.Comparator.comparingDouble(Record::getField3);
+    }
+
     @Override
     public String toString() {
         return "Record{field1='" + field1 + "', field2=" + field2 + ", field3=" + field3 + "}";
