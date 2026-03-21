@@ -1,7 +1,4 @@
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
     private static final Scanner SCANNER = new Scanner(System.in);
@@ -40,6 +37,29 @@ public class Main {
                         } else {
                             List<Record> sorted = sortStrategy.sort(items);
                             printItems(sorted);
+
+                            System.out.print("Count occurrences of an element in the result? (y/N): ");
+                            String doCount = SCANNER.nextLine().trim();
+                            if ("y".equalsIgnoreCase(doCount)) {
+                                if (sorted.isEmpty()) {
+                                    System.out.println("List is empty.");
+                                } else {
+                                    System.out.print("Enter index of element to count (1-" + sorted.size() + "): ");
+                                    String idxInput = SCANNER.nextLine().trim();
+                                    try {
+                                        int idx = Integer.parseInt(idxInput);
+                                        if (idx < 1 || idx > sorted.size()) {
+                                            System.out.println("Index out of range.");
+                                        } else {
+                                            Record target = sorted.get(idx - 1);
+                                            long count = parallelCountOccurrences(sorted, target);
+                                            System.out.println("Occurrences of " + target + ": " + count);
+                                        }
+                                    } catch (NumberFormatException ex) {
+                                        System.out.println("Invalid number.");
+                                    }
+                                }
+                            }
                         }
                     }
                     default -> System.out.println("Invalid choice. Please enter 0, 1, 2, or 3.");
@@ -109,6 +129,17 @@ public class Main {
         }
         for (Record item : items) {
             System.out.println(item);
+        }
+    }
+
+    private static <T> long parallelCountOccurrences(List<T> list, T target) {
+        if (list == null || list.isEmpty()) {
+            return 0L;
+        }
+        if (target == null) {
+            return list.parallelStream().filter(Objects::isNull).count();
+        } else {
+            return list.parallelStream().filter(target::equals).count();
         }
     }
 }
