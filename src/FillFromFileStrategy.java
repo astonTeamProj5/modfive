@@ -7,15 +7,21 @@ public class FillFromFileStrategy implements TextStrategy {
         List<Record> items = new ArrayList<>();
 
         System.out.print("Enter file path: ");
+        if(!scanner.hasNext()){
+            System.out.println("No input provided");
+            return new ArrayList<>();
+        }
+
         String path = scanner.nextLine();
-        path = path.replace("\"","");//For windows copy file path
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
-
-            String line;
-
-            while ((line = reader.readLine()) != null) {
-
+        path = path.replace("\"","");//Для кнопки "копировать как путь" винды
+        System.out.println();//переносим строку для красивого вывода
+        try(BufferedReader reader = new BufferedReader(new FileReader(path))) {
+            for (int i = 0; i < length; i++) {
+                String line = reader.readLine();
+                if(line == null){
+                    System.out.println("Unexpected end of file.");
+                    break;
+                }
                 String[] parts = line.split(",");
 
                 if (parts.length != 3) {
@@ -24,15 +30,23 @@ public class FillFromFileStrategy implements TextStrategy {
                 }
 
                 try {
-                    int field1 = Integer.parseInt(parts[0]);
-                    String field2 = parts[1].trim();
+                    String field1 = parts[0].trim();
+                    int field2 = Integer.parseInt(parts[1]);
+                    if(field2 <= 0){
+                        System.out.println("Invalid number of bus " + field2);
+                        continue;
+                    }
                     int field3 = Integer.parseInt(parts[2]);
+                    if(field3 < 0){
+                        System.out.println("Invalid mileage " + field3);
+                        continue;
+                    }
 
                     Record record = new Record.Builder()
-                            .field1(field1)
-                            .field2(field2)
-                            .field3(field3)
-                            .build();
+                        .field1(field1)
+                        .field2(field2)
+                        .field3(field3)
+                        .build();
 
                     items.add(record);
 
@@ -40,7 +54,6 @@ public class FillFromFileStrategy implements TextStrategy {
                     System.out.println("Error parsing line: " + line);
                 }
             }
-
         } catch (IOException e) {
             System.out.println("File reading error: " + e.getMessage());
         }

@@ -29,7 +29,7 @@ public class Record {
     public static class Builder {
         private String field1;
         private int field2;
-        private double field3;
+        private int field3;
 
         public Builder field1(String field1) {
             this.field1 = field1;
@@ -41,7 +41,7 @@ public class Record {
             return this;
         }
 
-        public Builder field3(double field3) {
+        public Builder field3(int field3) {
             this.field3 = field3;
             return this;
         }

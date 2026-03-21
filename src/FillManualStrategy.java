@@ -9,26 +9,26 @@ public class FillManualStrategy implements TextStrategy {
 
         for (int i = 1; i <= length; i++) {
             System.out.println("Bus number " + (i));
-            System.out.print("Enter bus serial number:");
 
-            int field1 = 0;
-            while(field1 <= 0) {
+            String field1 = "";
+            System.out.print("Enter model:");
+            while(field1.isBlank()) {
+                field1 = scanner.nextLine();
+                if (field1.isBlank()) {
+                    System.out.print("Invalid input: model cannot be empty.\nPlease enter model again:");
+                }
+            }
+
+            System.out.print("Enter bus serial number:");
+            int field2 = 0;
+            while(field2 <= 0) {
                 try {
-                    field1 = Integer.parseInt(scanner.nextLine());
-                    if(field1 <= 0){
+                    field2 = Integer.parseInt(scanner.nextLine());
+                    if(field2 <= 0){
                         System.out.print("Invalid number. Please enter number again:");
                     }
                 } catch (NumberFormatException e) {
                     System.out.print("Invalid number. Please enter number again:");
-                }
-            }
-
-            String field2 = "";
-            System.out.print("Enter model:");
-            while(field2.isBlank()) {
-                field2 = scanner.nextLine();
-                if (field2.isBlank()) {
-                    System.out.print("Invalid input: model cannot be empty.\nPlease enter model again:");
                 }
             }
 
