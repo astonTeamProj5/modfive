@@ -1,7 +1,14 @@
+package tests;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import main.FillFromFileStrategy;
+import main.FillRandomStrategy;
+import main.FillManualStrategy;
+import main.TextStrategy;
+import main.Record;
 
 public class FillTestRunner {
     private static final Scanner SCANNER = new Scanner(System.in);

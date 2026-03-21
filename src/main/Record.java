@@ -1,3 +1,5 @@
+package main;
+
 public class Record {
     private final String field1;
     private final int field2;
