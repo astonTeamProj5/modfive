@@ -35,8 +35,6 @@ public class QuickSortModificated {
             i++;
         }
         swap(array, i, high);
-//        if (checkEven(array.get(i + 1).getField2()))
-//            swap(array, i + 1, high);
         return i;
     }
 
