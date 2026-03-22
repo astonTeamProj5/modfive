@@ -4,27 +4,29 @@ import main.FillRandomStrategy;
 import main.Record;
 import main.TextStrategy;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
     private static final Scanner SCANNER = new Scanner(System.in);
 
     public static void main(String[] args) {
         try (SCANNER) {
-            Map<String, TextStrategy> strategies = new HashMap<>();
-            strategies.put("1", new FillFromFileStrategy());
-            strategies.put("2", new FillRandomStrategy());
-            strategies.put("3", new FillManualStrategy());
-            
+            Map<String, TextStrategy> fillStrategies = new HashMap<>();
+            fillStrategies.put("1", new FillFromFileStrategy());
+            fillStrategies.put("2", new FillRandomStrategy());
+            fillStrategies.put("3", new FillManualStrategy());
+
+            Map<String, SortStrategy> sortStrategies = new HashMap<>();
+            sortStrategies.put("1", new SortByField1());
+            sortStrategies.put("2", new SortByField2());
+            sortStrategies.put("3", new SortByField3());
+
             boolean running = true;
-            
+
             while (running) {
                 printMenu();
                 String input = SCANNER.nextLine().trim();
-                
+
                 switch (input) {
                     case "0" -> {
                         running = false;
@@ -32,9 +34,39 @@ public class Main {
                     }
                     case "1", "2", "3" -> {
                         int length = promptLength();
-                        TextStrategy strategy = strategies.get(input);
-                        List<Record> items = strategy.fill(length, SCANNER);
-                    printItems(items);
+                        TextStrategy fillStrategy = fillStrategies.get(input);
+                        List<Record> items = fillStrategy.fill(length, SCANNER);
+
+                        SortStrategy sortStrategy = promptSortStrategy(sortStrategies);
+                        if (sortStrategy == null) {
+                            running = false;
+                        } else {
+                            List<Record> sorted = sortStrategy.sort(items);
+                            printItems(sorted);
+
+                            System.out.print("Count occurrences of an element in the result? (y/N): ");
+                            String doCount = SCANNER.nextLine().trim();
+                            if ("y".equalsIgnoreCase(doCount)) {
+                                if (sorted.isEmpty()) {
+                                    System.out.println("List is empty.");
+                                } else {
+                                    System.out.print("Enter index of element to count (1-" + sorted.size() + "): ");
+                                    String idxInput = SCANNER.nextLine().trim();
+                                    try {
+                                        int idx = Integer.parseInt(idxInput);
+                                        if (idx < 1 || idx > sorted.size()) {
+                                            System.out.println("Index out of range.");
+                                        } else {
+                                            Record target = sorted.get(idx - 1);
+                                            long count = parallelCountOccurrences(sorted, target);
+                                            System.out.println("Occurrences of " + target + ": " + count);
+                                        }
+                                    } catch (NumberFormatException ex) {
+                                        System.out.println("Invalid number.");
+                                    }
+                                }
+                            }
+                        }
                     }
                     default -> System.out.println("Invalid choice. Please enter 0, 1, 2, or 3.");
                 }
@@ -69,6 +101,31 @@ public class Main {
         System.out.print("Your choice: ");
     }
 
+    private static SortStrategy promptSortStrategy(Map<String, SortStrategy> sortStrategies) {
+        while (true) {
+            printSortMenu();
+            String input = SCANNER.nextLine().trim();
+            if ("0".equals(input)) {
+                return null;
+            }
+            SortStrategy strategy = sortStrategies.get(input);
+            if (strategy != null) {
+                return strategy;
+            }
+            System.out.println("Invalid choice. Please enter 0, 1, 2, or 3.");
+        }
+    }
+
+    private static void printSortMenu() {
+        System.out.println();
+        System.out.println("Choose sort field:");
+        System.out.println("1 - field1 (String)");
+        System.out.println("2 - field2 (int)");
+        System.out.println("3 - field3 (double)");
+        System.out.println("0 - Exit");
+        System.out.print("Your choice: ");
+    }
+
     private static void printItems(List<Record> items) {
         System.out.println();
         System.out.println("Result (" + items.size() + "):");
@@ -78,6 +135,17 @@ public class Main {
         }
         for (Record item : items) {
             System.out.println(item);
+        }
+    }
+
+    private static <T> long parallelCountOccurrences(List<T> list, T target) {
+        if (list == null || list.isEmpty()) {
+            return 0L;
+        }
+        if (target == null) {
+            return list.parallelStream().filter(Objects::isNull).count();
+        } else {
+            return list.parallelStream().filter(target::equals).count();
         }
     }
 }
