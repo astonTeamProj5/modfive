@@ -1,0 +1,8 @@
+Bus1;10;25.5
+Bus2;15;30.75
+Bus3;20;40.0
+InvalidLine;WrongFormat
+Bus4;25;50.25
+Bus5;-5;60.0
+Bus6;30;-10.5
+Bus7;35;70.8
