@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import main.Record;
 
 public class RecordTests {
     public static void run() {

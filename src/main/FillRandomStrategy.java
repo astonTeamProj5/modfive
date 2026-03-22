@@ -17,7 +17,7 @@ public class FillRandomStrategy implements TextStrategy {
         for (int i = 1; i <= length; i++) {
             String field1 = MODELS[random.nextInt(MODELS.length)];
             int field2 = random.nextInt(1000);
-            int field3 = random.nextInt(1000) * 100;
+            double field3 = random.nextDouble(1000) * 100;
             items.add(new Record.Builder()
                     .field1(field1)
                     .field2(field2)

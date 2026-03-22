@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import main.Record;
 
 public class SortStrategyTests {
     public static void run() {

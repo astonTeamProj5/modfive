@@ -1,4 +1,5 @@
 import java.util.List;
+import main.Record;
 
 public class SortByField3 implements SortStrategy {
     @Override

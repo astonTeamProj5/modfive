@@ -34,11 +34,11 @@ public class FillManualStrategy implements TextStrategy {
                 }
             }
 
-            int field3 = -1;
+            double field3 = -1.0;
             System.out.print("Enter mileage:");
             while(field3 < 0) {
                 try {
-                    field3 = Integer.parseInt(scanner.nextLine());
+                    field3 = Double.parseDouble(scanner.nextLine());
                     if (field3 < 0) {
                         System.out.print("Mileage cannot be less than 0. Please enter mileage again:");
                     }

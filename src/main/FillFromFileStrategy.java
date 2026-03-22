@@ -38,7 +38,7 @@ public class FillFromFileStrategy implements TextStrategy {
                         System.out.println("Invalid number of bus " + field2);
                         continue;
                     }
-                    int field3 = Integer.parseInt(parts[2]);
+                    double field3 = Double.parseDouble(parts[2]);
                     if(field3 < 0){
                         System.out.println("Invalid mileage " + field3);
                         continue;

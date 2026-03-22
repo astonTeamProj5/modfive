@@ -1,5 +1,6 @@
 import java.util.Comparator;
 import java.util.List;
+import main.Record;
 
 public class QuickSortModificated {
     public static void sortByEvenField2(List<Record> array) {

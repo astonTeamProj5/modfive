@@ -81,15 +81,16 @@ public class FillTestRunner {
     }
 
     private static void runFileFillTests(TextStrategy strategy){
-        Scanner scanner = new Scanner("testFileFill.txt");
+        //Как заменить дубликаты на одну строку?
+        Scanner scanner = new Scanner("src/tests/testFileFill.txt");
         testStrategy(strategy, 2, scanner);
-        scanner = new Scanner("testFileFill.txt");
+        scanner = new Scanner("src/tests/testFileFill.txt");
         testStrategy(strategy, 1, scanner);
-        scanner = new Scanner("testFileFill.txt");
+        scanner = new Scanner("src/tests/testFileFill.txt");
         testStrategy(strategy, 0, scanner);
-        scanner = new Scanner("testFileFill.txt");
+        scanner = new Scanner("src/tests/testFileFill.txt");
         testStrategy(strategy, -10, scanner);
-        scanner = new Scanner("testFileFill.txt");
+        scanner = new Scanner("src/tests/testFileFill.txt");
         testStrategy(strategy, 6, scanner);
     }
 }

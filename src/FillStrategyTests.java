@@ -1,5 +1,7 @@
 import java.util.List;
 import java.util.Scanner;
+import main.*;
+import main.Record;//иначе придется в List<Record> писать <main.Record> и т.д.
 
 public class FillStrategyTests {
     public static void run() {
