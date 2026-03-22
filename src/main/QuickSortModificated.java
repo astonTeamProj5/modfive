@@ -1,11 +1,22 @@
-import java.util.Comparator;
+package main;
+
+import java.util.ArrayList;
 import java.util.List;
-import main.Record;
 
 public class QuickSortModificated {
     public static void sortByEvenField2(List<Record> array) {
         if (array == null || array.size() <= 1) return;
         quickSort(array, 0, array.size() - 1);
+    }
+
+    public static List<Record> sortedByEvenField2(List<Record> array) {
+        if (array == null || array.size() <= 1) return array;
+
+        List<Record> copy = new ArrayList<>(array);
+
+        quickSort(copy, 0, array.size() - 1);
+
+        return copy;
     }
 
     private static void quickSort(List<Record> array, int low, int high) {

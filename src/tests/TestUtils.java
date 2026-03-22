@@ -1,3 +1,5 @@
+package tests;
+
 import java.util.Objects;
 
 public final class TestUtils {

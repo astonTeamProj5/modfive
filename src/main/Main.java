@@ -1,8 +1,4 @@
-import main.FillFromFileStrategy;
-import main.FillManualStrategy;
-import main.FillRandomStrategy;
-import main.Record;
-import main.TextStrategy;
+package main;
 
 import java.util.*;
 
@@ -16,10 +12,10 @@ public class Main {
             fillStrategies.put("2", new FillRandomStrategy());
             fillStrategies.put("3", new FillManualStrategy());
 
-            Map<String, SortStrategy> sortStrategies = new HashMap<>();
-            sortStrategies.put("1", new SortByField1());
-            sortStrategies.put("2", new SortByField2());
-            sortStrategies.put("3", new SortByField3());
+            Map<String, Comparator<Record>> sortStrategies = new HashMap<>();
+            sortStrategies.put("1", Record.byField1());
+            sortStrategies.put("2", Record.byField2());
+            sortStrategies.put("3", Record.byField3());
 
             boolean running = true;
 
@@ -37,11 +33,12 @@ public class Main {
                         TextStrategy fillStrategy = fillStrategies.get(input);
                         List<Record> items = fillStrategy.fill(length, SCANNER);
 
-                        SortStrategy sortStrategy = promptSortStrategy(sortStrategies);
+                        Comparator<Record> sortStrategy = promptSortStrategy(sortStrategies);
                         if (sortStrategy == null) {
                             running = false;
                         } else {
-                            List<Record> sorted = sortStrategy.sort(items);
+                            printItems(items);
+                            List<Record> sorted = QuickSort.sorted(items, sortStrategy);
                             printItems(sorted);
 
                             System.out.print("Count occurrences of an element in the result? (y/N): ");
@@ -101,14 +98,14 @@ public class Main {
         System.out.print("Your choice: ");
     }
 
-    private static SortStrategy promptSortStrategy(Map<String, SortStrategy> sortStrategies) {
+    private static Comparator<Record> promptSortStrategy(Map<String, Comparator<Record>> sortStrategies) {
         while (true) {
             printSortMenu();
             String input = SCANNER.nextLine().trim();
             if ("0".equals(input)) {
                 return null;
             }
-            SortStrategy strategy = sortStrategies.get(input);
+            Comparator<Record> strategy = sortStrategies.get(input);
             if (strategy != null) {
                 return strategy;
             }

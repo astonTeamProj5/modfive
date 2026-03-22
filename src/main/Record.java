@@ -1,5 +1,7 @@
 package main;
 
+import java.util.Comparator;
+
 public class Record {
     private final String field1;
     private final int field2;
@@ -11,33 +13,17 @@ public class Record {
         this.field3 = builder.field3;
     }
 
-    public String getField1() {
-        return field1;
-    }
+    public String getField1() { return field1; }
 
-    public int getField2() {
-        return field2;
-    }
+    public int getField2() { return field2; }
 
     public double getField3() {
         return field3;
     }
 
-    public static java.util.Comparator<Record> byField1() {
-        return java.util.Comparator.comparing(Record::getField1);
-    }
-
-    public static java.util.Comparator<Record> byField2() {
-        return java.util.Comparator.comparingInt(Record::getField2);
-    }
-
-    public static java.util.Comparator<Record> byField3() {
-        return java.util.Comparator.comparingDouble(Record::getField3);
-    }
-
     @Override
     public String toString() {
-        return "Record{field1='" + field1 + "', field2=" + field2 + ", field3=" + field3 + "}";
+        return "\n" + "Record{field1='" + field1 + "', field2=" + field2 + ", field3=" + field3 + "}";
     }
 
     public static class Builder {
@@ -63,5 +49,16 @@ public class Record {
         public Record build() {
             return new Record(this);
         }
+    }
+
+
+    public static Comparator<Record> byField1() {
+        return Comparator.comparing(Record::getField1);
+    }
+
+    public static Comparator<Record> byField2() { return Comparator.comparingInt(Record::getField2); }
+
+    public static Comparator<Record> byField3() {
+        return Comparator.comparingDouble(Record::getField3);
     }
 }

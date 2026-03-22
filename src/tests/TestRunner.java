@@ -1,3 +1,7 @@
+package tests;
+
+import main.*;
+
 public class TestRunner {
     public static void main(String[] args) {
         int passed = 0;

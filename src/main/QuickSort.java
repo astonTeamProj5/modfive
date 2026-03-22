@@ -1,3 +1,6 @@
+package main;
+
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -5,6 +8,16 @@ public class QuickSort {
     public static void sort(List<Record> array, Comparator<Record> comparator) {
         if (array == null || array.size() <= 1) return;
         quickSort(array, 0, array.size() - 1, comparator);
+    }
+
+    public static List<Record> sorted(List<Record> array, Comparator<Record> comparator) {
+        if (array == null || array.size() <= 1) return array;
+
+        List<Record> copy = new ArrayList<>(array);
+
+        quickSort(copy, 0, array.size() - 1, comparator);
+
+        return copy;
     }
 
     private static void quickSort(List<Record> array, int low, int high, Comparator<Record> comparator) {
