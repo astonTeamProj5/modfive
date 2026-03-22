@@ -1,3 +1,9 @@
+import main.FillFromFileStrategy;
+import main.FillManualStrategy;
+import main.FillRandomStrategy;
+import main.Record;
+import main.TextStrategy;
+
 import java.util.*;
 
 public class Main {
