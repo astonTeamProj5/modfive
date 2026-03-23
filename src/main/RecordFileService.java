@@ -36,10 +36,14 @@ public class RecordFileService {
         }
     }
 
-    public static void writeRecordsToFile(List<Record> records, String fileName) throws IOException {
+    public static void writeRecordsToFile(List<Record> records, String fileName) {
         List<String> lines = records.stream()
                 .map(bus -> bus.getField1() + ";" + bus.getField2() + ";" + bus.getField3())
                 .toList();
-        Files.write(Path.of(fileName), lines);
+        try {
+            Files.write(Path.of(fileName), lines);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to write to file: " + fileName , e);
+        }
     }
 }
