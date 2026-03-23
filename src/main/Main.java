@@ -37,9 +37,9 @@ public class Main {
                         if (sortStrategy == null) {
                             running = false;
                         } else {
-                            printItems(items);
+                            printItems(items, "Base collection:");
                             List<Record> sorted = QuickSort.sorted(items, sortStrategy);
-                            printItems(sorted);
+                            printItems(sorted, "Sorted collection:");
 
                             System.out.print("Count occurrences of an element in the result? (y/N): ");
                             String doCount = SCANNER.nextLine().trim();
@@ -123,16 +123,19 @@ public class Main {
         System.out.print("Your choice: ");
     }
 
-    private static void printItems(List<Record> items) {
+    private static void printItems(List<Record> items, String header) {
         System.out.println();
-        System.out.println("Result (" + items.size() + "):");
+        System.out.println(header);
+        System.out.print("Result (" + items.size() + "):");
         if (items.isEmpty()) {
             System.out.println("(empty)");
             return;
         }
         for (Record item : items) {
-            System.out.println(item);
+            System.out.print(item);
         }
+
+        System.out.println();
     }
 
     private static <T> long parallelCountOccurrences(List<T> list, T target) {
