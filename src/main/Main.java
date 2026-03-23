@@ -41,33 +41,49 @@ public class Main {
                             List<Record> sorted = QuickSort.sorted(items, sortStrategy);
                             printItems(sorted, "Sorted collection:");
 
-                            System.out.print("Count occurrences of an element in the result? (y/N): ");
-                            String doCount = SCANNER.nextLine().trim();
-                            if ("y".equalsIgnoreCase(doCount)) {
-                                if (sorted.isEmpty()) {
-                                    System.out.println("List is empty.");
-                                } else {
-                                    System.out.print("Enter index of element to count (1-" + sorted.size() + "): ");
-                                    String idxInput = SCANNER.nextLine().trim();
-                                    try {
-                                        int idx = Integer.parseInt(idxInput);
-                                        if (idx < 1 || idx > sorted.size()) {
-                                            System.out.println("Index out of range.");
-                                        } else {
-                                            Record target = sorted.get(idx - 1);
-                                            long count = parallelCountOccurrences(sorted, target);
-                                            System.out.println("Occurrences of " + target + ": " + count);
-                                        }
-                                    } catch (NumberFormatException ex) {
-                                        System.out.println("Invalid number.");
-                                    }
-                                }
-                            }
+                            countOccurrences(sorted);
+                            writeToFile(sorted);
+
                         }
                     }
                     default -> System.out.println("Invalid choice. Please enter 0, 1, 2, or 3.");
                 }
             }
+        }
+    }
+
+    private static void countOccurrences(List<Record> sorted) {
+        System.out.print("Count occurrences of an element in the result? (y/N): ");
+        String doCount = SCANNER.nextLine().trim();
+        if ("y".equalsIgnoreCase(doCount)) {
+            if (sorted.isEmpty()) {
+                System.out.println("List is empty.");
+            } else {
+                System.out.print("Enter index of element to count (1-" + sorted.size() + "): ");
+                String idxInput = SCANNER.nextLine().trim();
+                try {
+                    int idx = Integer.parseInt(idxInput);
+                    if (idx < 1 || idx > sorted.size()) {
+                        System.out.println("Index out of range.");
+                    } else {
+                        Record target = sorted.get(idx - 1);
+                        long count = parallelCountOccurrences(sorted, target);
+                        System.out.println("Occurrences of " + target + ": " + count);
+                    }
+                } catch (NumberFormatException ex) {
+                    System.out.println("Invalid number.");
+                }
+            }
+        }
+    }
+
+    private static void writeToFile(List<Record> sorted) {
+        System.out.print("Write results to file? (y/N): ");
+        String doWriteInFile = SCANNER.nextLine().trim();
+        if ("y".equalsIgnoreCase(doWriteInFile)) {
+            System.out.print("Write file name: ");
+            String fileName = SCANNER.nextLine().trim();
+            RecordFileService.writeRecordsToFile(sorted, fileName);
         }
     }
 
