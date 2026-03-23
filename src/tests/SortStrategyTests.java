@@ -18,9 +18,9 @@ public class SortStrategyTests {
         items.add(new Record.Builder().field1("A").field2(1).field3(3.0).build());
 
         List<Comparator<Record>> strategies = List.of(
-                Record.byField1(),
-                Record.byField2(),
-                Record.byField3()
+                Record.BY_FIELD1,
+                Record.BY_FIELD2,
+                Record.BY_FIELD3
         );
 
         for (Comparator strategy : strategies) {
