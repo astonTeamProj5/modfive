@@ -3,10 +3,10 @@ package main;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 import java.util.Optional;
+import java.util.stream.Collector;
 
 public class RecordFileService {
     public static List<Record> readRecordFromFile(String fileName) {
@@ -14,9 +14,16 @@ public class RecordFileService {
             return lines
                     .map(RecordFileService::parseRecord)
                     .flatMap(Optional::stream)
-                    .toList();
+                    .collect(Collector.of(
+                            CustomList::new,
+                            CustomList::add,
+                            (left, right) -> {
+                                left.addAll(right);
+                                return left;
+                            }
+                    ));
         } catch (IOException e) {
-            return new ArrayList<>();
+            return new CustomList<>();
         }
     }
 

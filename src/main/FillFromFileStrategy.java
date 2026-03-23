@@ -9,7 +9,7 @@ public class FillFromFileStrategy implements TextStrategy {
         System.out.print("Enter file path: ");
         if(!scanner.hasNext()){
             System.out.println("No input provided");
-            return new ArrayList<>();
+            return new CustomList<>();
         }
 
         String path = scanner.nextLine();
