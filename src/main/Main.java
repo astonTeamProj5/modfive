@@ -29,7 +29,7 @@ public class Main {
                         System.out.println("Exiting...");
                     }
                     case "1", "2", "3" -> {
-                        int length = promptLength();
+                        int length = input.equals("1") ? 0 : promptLength();
                         TextStrategy fillStrategy = fillStrategies.get(input);
                         List<Record> items = fillStrategy.fill(length, SCANNER);
 
