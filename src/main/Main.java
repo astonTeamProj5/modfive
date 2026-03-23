@@ -13,9 +13,9 @@ public class Main {
             fillStrategies.put("3", new FillManualStrategy());
 
             Map<String, Comparator<Record>> sortStrategies = new HashMap<>();
-            sortStrategies.put("1", Record.byField1());
-            sortStrategies.put("2", Record.byField2());
-            sortStrategies.put("3", Record.byField3());
+            sortStrategies.put("1", Record.BY_FIELD1);
+            sortStrategies.put("2", Record.BY_FIELD2);
+            sortStrategies.put("3", Record.BY_FIELD3);
 
             boolean running = true;
 
@@ -32,13 +32,12 @@ public class Main {
                         int length = input.equals("1") ? 0 : promptLength();
                         TextStrategy fillStrategy = fillStrategies.get(input);
                         List<Record> items = fillStrategy.fill(length, SCANNER);
-
                         Comparator<Record> sortStrategy = promptSortStrategy(sortStrategies);
                         if (sortStrategy == null) {
                             running = false;
                         } else {
+                            List<Record> sorted = sortWithExtraEx(items, sortStrategy);
                             printItems(items, "Base collection:");
-                            List<Record> sorted = QuickSort.sorted(items, sortStrategy);
                             printItems(sorted, "Sorted collection:");
 
                             countOccurrences(sorted);
@@ -50,6 +49,21 @@ public class Main {
                 }
             }
         }
+    }
+
+    private static List<Record> sortWithExtraEx(List<Record> items, Comparator<Record> sortStrategy) {
+        // Если выбираем сортировку по второму полю (int)
+        if (sortStrategy == Record.BY_FIELD2) {
+            // Если выбираем сортировку по первому доп. заданию
+            System.out.print("Sort by modified algorithm? (y/N): ");
+            String isExtraFirstEx = SCANNER.nextLine().trim();
+            if ("y".equalsIgnoreCase(isExtraFirstEx)) {
+                return QuickSortModificated.sortedByEvenField2(items);
+            }
+        }
+        System.out.println("COMMON SORT");
+        // Иначе обычная сортировка
+        return QuickSort.sorted(items, sortStrategy);
     }
 
     private static void countOccurrences(List<Record> sorted) {
