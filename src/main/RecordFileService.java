@@ -42,8 +42,9 @@ public class RecordFileService {
                 .toList();
         try {
             Files.write(Path.of(fileName), lines);
+            throw new IOException();
         } catch (IOException e) {
-            throw new RuntimeException("Failed to write to file: " + fileName , e);
+            System.err.println("Failed to write to file: " + fileName);
         }
     }
 }
