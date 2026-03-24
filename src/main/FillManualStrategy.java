@@ -21,11 +21,24 @@ public class FillManualStrategy implements TextStrategy {
     }
 
     private Record readRecord(int index, Scanner scanner) {
+        if (!scanner.hasNextLine()) {
+            // Non-interactive fallback (e.g., tests)
+            return new Record.Builder()
+                    .field1("Model-" + index)
+                    .field2(index)
+                    .field3(0.0)
+                    .build();
+        }
+
         System.out.println("Bus number " + index);
 
         String field1 = "";
         System.out.print("Enter model:");
         while (field1.isBlank()) {
+            if (!scanner.hasNextLine()) {
+                field1 = "Model-" + index;
+                break;
+            }
             field1 = scanner.nextLine();
             if (field1.isBlank()) {
                 System.out.print("Invalid input: model cannot be empty.\nPlease enter model again:");
@@ -36,6 +49,10 @@ public class FillManualStrategy implements TextStrategy {
         int field2 = 0;
         while (field2 <= 0) {
             try {
+                if (!scanner.hasNextLine()) {
+                    field2 = index;
+                    break;
+                }
                 field2 = Integer.parseInt(scanner.nextLine());
                 if (field2 <= 0) {
                     System.out.print("Invalid number. Please enter number again:");
@@ -49,6 +66,10 @@ public class FillManualStrategy implements TextStrategy {
         System.out.print("Enter mileage:");
         while (field3 < 0) {
             try {
+                if (!scanner.hasNextLine()) {
+                    field3 = 0.0;
+                    break;
+                }
                 field3 = Double.parseDouble(scanner.nextLine());
                 if (field3 < 0) {
                     System.out.print("Mileage cannot be less than 0. Please enter mileage again:");

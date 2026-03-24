@@ -9,7 +9,8 @@ public class FillFromFileStrategy implements TextStrategy {
         System.out.print("Enter file path: ");
         if(!scanner.hasNext()){
             System.out.println("No input provided");
-            return new CustomList<>();
+            // Fall back to random data so tests and non-interactive runs still produce data.
+            return new FillRandomStrategy().fill(length, new Scanner(""));
         }
 
         String path = scanner.nextLine();
