@@ -29,13 +29,13 @@ public class RecordTests {
         items.add(new Record.Builder().field1("B").field2(2).field3(2.0).build());
         items.add(new Record.Builder().field1("A").field2(1).field3(3.0).build());
 
-        items.sort(Record.byField1());
+        items.sort(Record.BY_FIELD1);
         TestUtils.assertEquals("A", items.get(0).getField1(), "byField1 should sort ascending");
 
-        items.sort(Record.byField2());
+        items.sort(Record.BY_FIELD2);
         TestUtils.assertEqualsInt(1, items.get(0).getField2(), "byField2 should sort ascending");
 
-        items.sort(Record.byField3());
+        items.sort(Record.BY_FIELD3);
         TestUtils.assertEqualsDouble(2.0, items.get(0).getField3(), 0.0001, "byField3 should sort ascending");
     }
 }

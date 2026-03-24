@@ -51,14 +51,7 @@ public class Record {
         }
     }
 
-
-    public static Comparator<Record> byField1() {
-        return Comparator.comparing(Record::getField1);
-    }
-
-    public static Comparator<Record> byField2() { return Comparator.comparingInt(Record::getField2); }
-
-    public static Comparator<Record> byField3() {
-        return Comparator.comparingDouble(Record::getField3);
-    }
+    public static final Comparator<Record> BY_FIELD1 = Comparator.comparing(Record::getField1);
+    public static final Comparator<Record> BY_FIELD2 = Comparator.comparing(Record::getField2);
+    public static final Comparator<Record> BY_FIELD3 = Comparator.comparing(Record::getField3);
 }
